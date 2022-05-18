@@ -2689,6 +2689,7 @@ const modelsPreLoad = await axios__WEBPACK_IMPORTED_MODULE_1___default()({
 
 });
 const preModels = modelsPreLoad.data;
+console.log(preModels);
 
 for (let i = 0; i < preModels.length; i++) {
   preModels[i] = inflection__WEBPACK_IMPORTED_MODULE_2___default().pluralize(preModels[i]);
