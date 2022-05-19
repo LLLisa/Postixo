@@ -2,12 +2,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { loadModels, genericLoader } from '../store';
 import inflection from 'inflection';
+import InnerGrid from './InnerGrid';
 
 class Grid extends React.Component {
   constructor() {
     super();
     this.state = {
       selectedTable: '',
+      expandField: '',
     };
     this.handleOnChange = this.handleOnChange.bind(this);
     this.tableSubmit = this.tableSubmit.bind(this);
@@ -37,12 +39,23 @@ class Grid extends React.Component {
   }
 
   render() {
-    console.log('render', this.props, this.state);
+    // console.log('render', this.props, this.state);
     const { selectedTable } = this.state;
-    console.log(this.props[selectedTable]);
+    // console.log(this.props[selectedTable]);
     const { models } = this.props;
     return (
       <div>
+        <select
+          name="tableSelect"
+          value={selectedTable}
+          onChange={this.tableSubmit}
+        >
+          {models.length
+            ? models.map((model, i) => {
+                return <option key={i}>{inflection.pluralize(model)}</option>;
+              })
+            : ''}
+        </select>
         {selectedTable.length && this.props[selectedTable].length ? (
           <table>
             <thead>
@@ -56,8 +69,16 @@ class Grid extends React.Component {
               {this.props[selectedTable].map((row, i) => {
                 return (
                   <tr key={i}>
-                    {Object.values(row).map((field, i) => {
-                      return <td key={i}>{field}</td>;
+                    {Object.values(row).map((value, j) => {
+                      return value && Array.isArray(value) ? (
+                        <td key={j}>
+                          <InnerGrid inherited={value} />
+                        </td>
+                      ) : typeof value === 'object' ? (
+                        <td key={j}>cannot display objects :(</td>
+                      ) : (
+                        <td key={j}>{value}</td>
+                      );
                     })}
                   </tr>
                 );
@@ -67,17 +88,6 @@ class Grid extends React.Component {
         ) : (
           <p>no data to display</p>
         )}
-        <select
-          name="tableSelect"
-          value={selectedTable}
-          onChange={this.tableSubmit}
-        >
-          {models.length
-            ? models.map((model, i) => {
-                return <option key={i}>{inflection.pluralize(model)}</option>;
-              })
-            : ''}
-        </select>
       </div>
     );
   }
