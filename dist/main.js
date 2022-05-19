@@ -2480,8 +2480,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../store */ "./store/index.js");
 /* harmony import */ var inflection__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! inflection */ "./node_modules/inflection/lib/inflection.js");
 /* harmony import */ var inflection__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(inflection__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _InnerGrid__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./InnerGrid */ "./src/InnerGrid.js");
 var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_store__WEBPACK_IMPORTED_MODULE_2__]);
 _store__WEBPACK_IMPORTED_MODULE_2__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];
+
 
 
 
@@ -2491,7 +2493,8 @@ class Grid extends (react__WEBPACK_IMPORTED_MODULE_0___default().Component) {
   constructor() {
     super();
     this.state = {
-      selectedTable: ''
+      selectedTable: '',
+      expandField: ''
     };
     this.handleOnChange = this.handleOnChange.bind(this);
     this.tableSubmit = this.tableSubmit.bind(this);
@@ -2547,13 +2550,16 @@ class Grid extends (react__WEBPACK_IMPORTED_MODULE_0___default().Component) {
     }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tbody", null, this.props[selectedTable].map((row, i) => {
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tr", {
         key: i
-      }, Object.values(row).map((field, i) => {
-        //need to find a better way of dealing with objects/null across the board
-        return typeof field === 'object' ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
-          key: i
-        }, 'object') : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
-          key: i
-        }, field);
+      }, Object.values(row).map((value, j) => {
+        return value && Array.isArray(value) ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
+          key: j
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_InnerGrid__WEBPACK_IMPORTED_MODULE_4__["default"], {
+          inherited: value
+        })) : typeof value === 'object' ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
+          key: j
+        }, "cannot display objects :(") : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
+          key: j
+        }, value);
       }));
     }))) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "no data to display"));
   }
@@ -2570,6 +2576,51 @@ const mapDispatch = dispatch => {
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,react_redux__WEBPACK_IMPORTED_MODULE_1__.connect)(state => state, mapDispatch)(Grid));
 __webpack_async_result__();
 } catch(e) { __webpack_async_result__(e); } });
+
+/***/ }),
+
+/***/ "./src/InnerGrid.js":
+/*!**************************!*\
+  !*** ./src/InnerGrid.js ***!
+  \**************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+
+
+
+
+const InnerGrid = props => {
+  console.log(props.inherited);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("table", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("thead", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tr", null, Object.keys(props.inherited[0]).map((field, i) => {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("th", {
+      key: i
+    }, field);
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tbody", null, props.inherited.map((row, i) => {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tr", {
+      key: i
+    }, Object.values(row).map((value, j) => {
+      return value && Array.isArray(value) ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
+        key: j
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(InnerGrid, {
+        inherited: value
+      })) : typeof value === 'object' ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
+        key: j
+      }, "cannot display objects :(") : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
+        key: j
+      }, value);
+    }));
+  }))));
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,react_redux__WEBPACK_IMPORTED_MODULE_1__.connect)(state => state)(InnerGrid));
 
 /***/ }),
 
