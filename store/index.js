@@ -52,7 +52,6 @@ const modelsPreLoad = await axios({
 });
 
 const preModels = modelsPreLoad.data;
-console.log(preModels);
 
 for (let i = 0; i < preModels.length; i++) {
   preModels[i] = inflection.pluralize(preModels[i]);

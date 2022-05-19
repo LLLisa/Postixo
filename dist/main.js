@@ -2524,14 +2524,15 @@ class Grid extends (react__WEBPACK_IMPORTED_MODULE_0___default().Component) {
   }
 
   render() {
-    // console.log('render', this.props, this.state);
+    console.log('render', this.props, this.state);
     const {
       selectedTable
     } = this.state;
+    console.log(this.props[selectedTable]);
     const {
       models
     } = this.props;
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, selectedTable.length && Object.hasOwn(this.props, [selectedTable]) ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("table", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("thead", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tr", null, Object.keys(this.props[selectedTable][0]).map((field, i) => {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, selectedTable.length && this.props[selectedTable].length ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("table", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("thead", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tr", null, Object.keys(this.props[selectedTable][0]).map((field, i) => {
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("th", {
         key: i
       }, field);
@@ -2543,7 +2544,7 @@ class Grid extends (react__WEBPACK_IMPORTED_MODULE_0___default().Component) {
           key: i
         }, field);
       }));
-    }))) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "table not found"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("select", {
+    }))) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "no data to display"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("select", {
       name: "tableSelect",
       value: selectedTable,
       onChange: this.tableSubmit
@@ -2689,7 +2690,6 @@ const modelsPreLoad = await axios__WEBPACK_IMPORTED_MODULE_1___default()({
 
 });
 const preModels = modelsPreLoad.data;
-console.log(preModels);
 
 for (let i = 0; i < preModels.length; i++) {
   preModels[i] = inflection__WEBPACK_IMPORTED_MODULE_2___default().pluralize(preModels[i]);

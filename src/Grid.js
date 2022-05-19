@@ -37,12 +37,13 @@ class Grid extends React.Component {
   }
 
   render() {
-    // console.log('render', this.props, this.state);
+    console.log('render', this.props, this.state);
     const { selectedTable } = this.state;
+    console.log(this.props[selectedTable]);
     const { models } = this.props;
     return (
       <div>
-        {selectedTable.length && Object.hasOwn(this.props, [selectedTable]) ? (
+        {selectedTable.length && this.props[selectedTable].length ? (
           <table>
             <thead>
               <tr>
@@ -64,7 +65,7 @@ class Grid extends React.Component {
             </tbody>
           </table>
         ) : (
-          <p>table not found</p>
+          <p>no data to display</p>
         )}
         <select
           name="tableSelect"
