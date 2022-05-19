@@ -37,12 +37,23 @@ class Grid extends React.Component {
   }
 
   render() {
-    console.log('render', this.props, this.state);
+    // console.log('render', this.props, this.state);
     const { selectedTable } = this.state;
-    console.log(this.props[selectedTable]);
+    // console.log(this.props[selectedTable]);
     const { models } = this.props;
     return (
       <div>
+        <select
+          name="tableSelect"
+          value={selectedTable}
+          onChange={this.tableSubmit}
+        >
+          {models.length
+            ? models.map((model, i) => {
+                return <option key={i}>{inflection.pluralize(model)}</option>;
+              })
+            : ''}
+        </select>
         {selectedTable.length && this.props[selectedTable].length ? (
           <table>
             <thead>
@@ -57,7 +68,12 @@ class Grid extends React.Component {
                 return (
                   <tr key={i}>
                     {Object.values(row).map((field, i) => {
-                      return <td key={i}>{field}</td>;
+                      //need to find a better way of dealing with objects/null across the board
+                      return typeof field === 'object' ? (
+                        <td key={i}>{'object'}</td>
+                      ) : (
+                        <td key={i}>{field}</td>
+                      );
                     })}
                   </tr>
                 );
@@ -67,17 +83,6 @@ class Grid extends React.Component {
         ) : (
           <p>no data to display</p>
         )}
-        <select
-          name="tableSelect"
-          value={selectedTable}
-          onChange={this.tableSubmit}
-        >
-          {models.length
-            ? models.map((model, i) => {
-                return <option key={i}>{inflection.pluralize(model)}</option>;
-              })
-            : ''}
-        </select>
       </div>
     );
   }

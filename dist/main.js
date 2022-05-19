@@ -2524,27 +2524,15 @@ class Grid extends (react__WEBPACK_IMPORTED_MODULE_0___default().Component) {
   }
 
   render() {
-    console.log('render', this.props, this.state);
+    // console.log('render', this.props, this.state);
     const {
       selectedTable
-    } = this.state;
-    console.log(this.props[selectedTable]);
+    } = this.state; // console.log(this.props[selectedTable]);
+
     const {
       models
     } = this.props;
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, selectedTable.length && this.props[selectedTable].length ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("table", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("thead", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tr", null, Object.keys(this.props[selectedTable][0]).map((field, i) => {
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("th", {
-        key: i
-      }, field);
-    }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tbody", null, this.props[selectedTable].map((row, i) => {
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tr", {
-        key: i
-      }, Object.values(row).map((field, i) => {
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
-          key: i
-        }, field);
-      }));
-    }))) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "no data to display"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("select", {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("select", {
       name: "tableSelect",
       value: selectedTable,
       onChange: this.tableSubmit
@@ -2552,7 +2540,22 @@ class Grid extends (react__WEBPACK_IMPORTED_MODULE_0___default().Component) {
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("option", {
         key: i
       }, inflection__WEBPACK_IMPORTED_MODULE_3___default().pluralize(model));
-    }) : ''));
+    }) : ''), selectedTable.length && this.props[selectedTable].length ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("table", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("thead", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tr", null, Object.keys(this.props[selectedTable][0]).map((field, i) => {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("th", {
+        key: i
+      }, field);
+    }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tbody", null, this.props[selectedTable].map((row, i) => {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tr", {
+        key: i
+      }, Object.values(row).map((field, i) => {
+        //need to find a better way of dealing with objects/null across the board
+        return typeof field === 'object' ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
+          key: i
+        }, 'object') : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
+          key: i
+        }, field);
+      }));
+    }))) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "no data to display"));
   }
 
 }
