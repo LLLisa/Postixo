@@ -69,13 +69,14 @@ app.get('/', (req, res) => {
 
 app.get('/models', async (req, res, next) => {
   try {
-    const test = await db.query(
+    let tables = await db.query(
       `SELECT * FROM information_schema.tables WHERE table_schema='public';`
     );
-    console.log(test);
+    tables = tables[0].map((table) => table.table_name);
+    console.log(tables);
     //query db here?
     res.send(
-      test
+      tables
       // Object.keys(db.models)
     );
   } catch (error) {
