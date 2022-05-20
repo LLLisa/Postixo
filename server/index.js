@@ -15,7 +15,7 @@ const init = async () => {
   }
 };
 
-init();
+// init();
 
 //server api-----------------------------------------
 app.use('/dist', express.static(path.join(__dirname, '../dist')));

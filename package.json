@@ -4,32 +4,73 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "webpack",
-    "start": "node server",
+    "build": "webpack ./src",
     "build:dev": "npm run build -- --watch --mode=development",
-    "start:dev": "nodemon server/index.js --ignore dist/ & npm run build:dev"
+    "start": "electron-forge start",
+    "start:dev": "npm run build:dev & npm start",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "publish": "electron-forge publish",
+    "lint": "echo \"No linting configured\""
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/LLLisa/Postixo.git"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": {
+    "name": "Lisa Knox",
+    "email": "lisaknox83@gmail.com"
+  },
+  "license": "MIT",
+  "config": {
+    "forge": {
+      "packagerConfig": {},
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "electron_postgres_test"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
+        }
+      ]
+    }
+  },
+  "homepage": "https://github.com/LLLisa/Postixo#readme",
   "bugs": {
     "url": "https://github.com/LLLisa/Postixo/issues"
   },
-  "homepage": "https://github.com/LLLisa/Postixo#readme",
   "dependencies": {
     "axios": "^0.27.2",
     "express": "^4.18.1",
-    "inflection": "^1.13.2",
     "pg": "^8.7.3",
-    "sequelize": "^6.19.0"
+    "sequelize": "^6.19.0",
+    "electron-squirrel-startup": "^1.0.0"
+
   },
   "devDependencies": {
     "@babel/core": "^7.17.10",
     "@babel/preset-react": "^7.16.7",
+    "@electron-forge/cli": "^6.0.0-beta.63",
+    "@electron-forge/maker-deb": "^6.0.0-beta.63",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.63",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.63",
+    "@electron-forge/maker-zip": "^6.0.0-beta.63",
+    "electron": "18.2.0",
     "babel-loader": "^8.2.5",
     "json-loader": "^0.5.7",
     "react": "^18.1.0",
@@ -41,5 +82,6 @@
     "redux-thunk": "^2.4.1",
     "webpack": "^5.72.0",
     "webpack-cli": "^4.9.2"
+    
   }
 }
