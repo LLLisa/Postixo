@@ -3,7 +3,7 @@ import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 import axios from 'axios';
 
-///get database name-------------------
+///get current database name-------------------
 const GET_DBNAME = 'GET_DBNAME';
 
 export const getDbName = () => {
@@ -21,6 +21,24 @@ const dbName = (state = '', action) => {
   return state;
 };
 
+//dblist slice------------------------------
+const LOAD_DBNAMES = 'LOAD_DBNAMES';
+
+export const loadDbNames = () => {
+  return async (dispatch) => {
+    const response = await axios({
+      url: '/dbList',
+      baseURL: 'http://localhost:42069',
+    });
+    dispatch({ type: LOAD_DBNAMES, payload: response.data });
+  };
+};
+
+const dbList = (state = [], action) => {
+  if (action.type === LOAD_DBNAMES) return action.payload;
+  return state;
+};
+
 //models slice ---------------
 const LOAD_MODELS = 'LOAD_MODELS';
 
@@ -33,7 +51,7 @@ export const loadModels = () => {
   return async (dispatch) => {
     const response = await axios({
       url: '/models',
-      baseURL: 'http://localhost:42069', //should be dynamic
+      baseURL: 'http://localhost:42069',
     });
     dispatch({ type: LOAD_MODELS, payload: response.data });
   };
@@ -42,15 +60,11 @@ export const loadModels = () => {
 //general store-----------------------------
 export const genericLoader = (slice) => {
   return async (dispatch) => {
-    try {
-      const response = await axios({
-        url: `/generic/${slice}`,
-        baseURL: 'http://localhost:42069',
-      });
-      dispatch({ type: `LOAD_${slice}`, payload: response.data });
-    } catch (error) {
-      console.log(error);
-    }
+    const response = await axios({
+      url: `/generic/${slice}`,
+      baseURL: 'http://localhost:42069',
+    });
+    dispatch({ type: `LOAD_${slice}`, payload: response.data });
   };
 };
 
@@ -62,20 +76,19 @@ const genericReducer = (slice) => {
 };
 
 //conduct witchcraft on the reducer
-const reducerBody = {};
 const modelsPreLoad = await axios({
   url: '/models',
-  baseURL: 'http://localhost:42069', //should be dynamic
+  baseURL: 'http://localhost:42069',
 });
 
 const preModels = modelsPreLoad.data;
-
+const reducerBody = {};
 for (let i = 0; i < preModels.length; i++) {
   reducerBody[preModels[i]] = genericReducer(preModels[i]);
 }
 
 //combine reducers------------------------------
-const reducer = combineReducers({ dbName, models, ...reducerBody });
+const reducer = combineReducers({ dbName, dbList, models, ...reducerBody });
 
 const store = createStore(reducer, applyMiddleware(thunk, logger));
 
