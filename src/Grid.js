@@ -56,28 +56,47 @@ class Grid extends React.Component {
         <div>
           <h1>Postixo</h1>
           {dbName.length ? <h3>current database is: {dbName}</h3> : ''}
-          <select
-            name="dbSelect"
-            value={this.state.dbName}
-            onChange={this.dbSelect}
-          >
-            {dbList.length
-              ? dbList.map((name, i) => {
-                  return <option key={i}>{name}</option>;
-                })
-              : ''}
-          </select>
-          <select
-            name="tableSelect"
-            value={selectedTable}
-            onChange={this.tableSubmit}
-          >
-            {models.length
-              ? models.map((model, i) => {
-                  return <option key={i}>{model}</option>;
-                })
-              : ''}
-          </select>
+          <div className="header">
+            <div className="selector">
+              <div className="label">
+                <label for="dbSelect">select database</label>
+              </div>
+              <div>
+                <select
+                  name="dbSelect"
+                  value={this.state.dbName}
+                  onChange={this.dbSelect}
+                >
+                  {dbList.length
+                    ? dbList.map((name, i) => {
+                        return <option key={i}>{name}</option>;
+                      })
+                    : ''}
+                </select>
+              </div>
+            </div>
+            <div className="selector">
+              <div className="label">
+                <label for="tableSelect">select table</label>
+              </div>
+              <div>
+                <select
+                  id="tableSelect"
+                  name="tableSelect"
+                  value={selectedTable}
+                  onChange={this.tableSubmit}
+                >
+                  {models.length ? (
+                    models.map((model, i) => {
+                      return <option key={i}>{model}</option>;
+                    })
+                  ) : (
+                    <option>no tables available</option>
+                  )}
+                </select>
+              </div>
+            </div>
+          </div>
         </div>
         {models.length &&
         selectedTable.length &&
