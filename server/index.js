@@ -6,19 +6,6 @@ let db = new Sequelize(`postgres://localhost/template1`, {
   logging: false,
 });
 
-app.get('/dbChange/:newDbName', (req, res, next) => {
-  try {
-    db.close();
-    db = new Sequelize(`postgres://localhost/${req.params.newDbName}`, {
-      logging: false,
-    });
-    //no response because forced F5
-  } catch (error) {
-    next(error);
-  }
-  res.sendStatus(200);
-});
-
 const init = async () => {
   try {
     console.log('~~~db connected~~~');
@@ -38,6 +25,31 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../index.html'));
 });
 
+app.get('/dbName', async (req, res, next) => {
+  try {
+    const db_name = await db.query(
+      'SELECT table_catalog FROM information_schema.tables LIMIT 1;'
+    );
+    const currentDb = db_name[0][0].table_catalog;
+    res.send(currentDb);
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.get('/dbChange/:newDbName', (req, res, next) => {
+  try {
+    db.close();
+    db = new Sequelize(`postgres://localhost/${req.params.newDbName}`, {
+      logging: false,
+    });
+    //no response because forced F5
+  } catch (error) {
+    next(error);
+  }
+  res.sendStatus(200);
+});
+
 //runs twice: once for reducer generator, once for store
 app.get('/models', async (req, res, next) => {
   try {
@@ -46,18 +58,6 @@ app.get('/models', async (req, res, next) => {
     );
     const response = tables[0].map((table) => table.table_name);
     res.send(response);
-  } catch (error) {
-    next(error);
-  }
-});
-
-app.get('/dbName', async (req, res, next) => {
-  try {
-    const db_name = await db.query(
-      'SELECT table_catalog FROM information_schema.tables LIMIT 1;'
-    );
-    const currentDb = db_name[0][0].table_catalog;
-    res.send(currentDb);
   } catch (error) {
     next(error);
   }
