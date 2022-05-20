@@ -1,7 +1,16 @@
 body {
   font-family: Arial, Helvetica, sans-serif;
+  flex-direction: column;
 }
 
-td {
-  border: 1px dotted black;
+td , th{
+  border-bottom: 1px dotted black;
+  border-left: 1px dotted black;
+  text-align: center;
 }
+
+.grayed {
+  background-color: lightgray;
+}
+
+
