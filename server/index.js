@@ -37,6 +37,16 @@ app.get('/dbName', async (req, res, next) => {
   }
 });
 
+app.get('/dbList', async (req, res, next) => {
+  try {
+    const rawlist = await db.query('SELECT datname FROM pg_database;');
+    const db_list = rawlist[0].map((dbase) => dbase.datname);
+    res.send(db_list);
+  } catch (error) {
+    next(error);
+  }
+});
+
 app.get('/dbChange/:newDbName', (req, res, next) => {
   try {
     db.close();

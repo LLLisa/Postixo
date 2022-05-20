@@ -3,7 +3,7 @@ import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 import axios from 'axios';
 
-///get database name-------------------
+///get current database name-------------------
 const GET_DBNAME = 'GET_DBNAME';
 
 export const getDbName = () => {
@@ -18,6 +18,24 @@ export const getDbName = () => {
 
 const dbName = (state = '', action) => {
   if (action.type === GET_DBNAME) return action.payload;
+  return state;
+};
+
+//dblist slice------------------------------
+const LOAD_DBNAMES = 'LOAD_DBNAMES';
+
+export const loadDbNames = () => {
+  return async (dispatch) => {
+    const response = await axios({
+      url: '/dbList',
+      baseURL: 'http://localhost:42069',
+    });
+    dispatch({ type: LOAD_DBNAMES, payload: response.data });
+  };
+};
+
+const dbList = (state = [], action) => {
+  if (action.type === LOAD_DBNAMES) return action.payload;
   return state;
 };
 
@@ -62,20 +80,19 @@ const genericReducer = (slice) => {
 };
 
 //conduct witchcraft on the reducer
-const reducerBody = {};
 const modelsPreLoad = await axios({
   url: '/models',
   baseURL: 'http://localhost:42069', //should be dynamic
 });
 
 const preModels = modelsPreLoad.data;
-
+const reducerBody = {};
 for (let i = 0; i < preModels.length; i++) {
   reducerBody[preModels[i]] = genericReducer(preModels[i]);
 }
 
 //combine reducers------------------------------
-const reducer = combineReducers({ dbName, models, ...reducerBody });
+const reducer = combineReducers({ dbName, dbList, models, ...reducerBody });
 
 const store = createStore(reducer, applyMiddleware(thunk, logger));
 
