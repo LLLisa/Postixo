@@ -51,7 +51,7 @@ export const loadModels = () => {
   return async (dispatch) => {
     const response = await axios({
       url: '/models',
-      baseURL: 'http://localhost:42069', //should be dynamic
+      baseURL: 'http://localhost:42069',
     });
     dispatch({ type: LOAD_MODELS, payload: response.data });
   };
@@ -60,15 +60,11 @@ export const loadModels = () => {
 //general store-----------------------------
 export const genericLoader = (slice) => {
   return async (dispatch) => {
-    try {
-      const response = await axios({
-        url: `/generic/${slice}`,
-        baseURL: 'http://localhost:42069',
-      });
-      dispatch({ type: `LOAD_${slice}`, payload: response.data });
-    } catch (error) {
-      console.log(error);
-    }
+    const response = await axios({
+      url: `/generic/${slice}`,
+      baseURL: 'http://localhost:42069',
+    });
+    dispatch({ type: `LOAD_${slice}`, payload: response.data });
   };
 };
 
@@ -82,7 +78,7 @@ const genericReducer = (slice) => {
 //conduct witchcraft on the reducer
 const modelsPreLoad = await axios({
   url: '/models',
-  baseURL: 'http://localhost:42069', //should be dynamic
+  baseURL: 'http://localhost:42069',
 });
 
 const preModels = modelsPreLoad.data;

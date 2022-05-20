@@ -17,7 +17,7 @@ class Grid extends React.Component {
   }
 
   async componentDidMount() {
-    console.log('CDM', this.props);
+    // console.log('CDM', this.props);
     const { loadModels, genericLoader } = this.props;
     await loadDbNames();
     await loadModels();
@@ -56,15 +56,6 @@ class Grid extends React.Component {
         <div>
           <h1>Postixo</h1>
           {dbName.length ? <h3>current database is: {dbName}</h3> : ''}
-          {/* <form>
-            <input
-              name="dbName"
-              value={this.state.dbName}
-              placeholder="database name"
-              onChange={this.handleOnChange}
-            ></input>
-            <button onClick={(ev) => this.dbSelect(ev)}>submit</button>
-          </form> */}
           <select
             name="dbSelect"
             value={this.state.dbName}
