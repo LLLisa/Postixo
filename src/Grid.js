@@ -49,28 +49,30 @@ class Grid extends React.Component {
     const { models, dbName } = this.props;
     return (
       <div>
-        <h1>Postixo</h1>
-        {dbName.length ? <h3>current database is: {dbName}</h3> : ''}
-        <form>
-          <input
-            name="dbName"
-            value={this.state.dbName}
-            placeholder="database name"
-            onChange={this.handleOnChange}
-          ></input>
-          <button onClick={(ev) => this.dbSelect(ev)}>submit</button>
-        </form>
-        <select
-          name="tableSelect"
-          value={selectedTable}
-          onChange={this.tableSubmit}
-        >
-          {models.length
-            ? models.map((model, i) => {
-                return <option key={i}>{model}</option>;
-              })
-            : ''}
-        </select>
+        <div>
+          <h1>Postixo</h1>
+          {dbName.length ? <h3>current database is: {dbName}</h3> : ''}
+          <form>
+            <input
+              name="dbName"
+              value={this.state.dbName}
+              placeholder="database name"
+              onChange={this.handleOnChange}
+            ></input>
+            <button onClick={(ev) => this.dbSelect(ev)}>submit</button>
+          </form>
+          <select
+            name="tableSelect"
+            value={selectedTable}
+            onChange={this.tableSubmit}
+          >
+            {models.length
+              ? models.map((model, i) => {
+                  return <option key={i}>{model}</option>;
+                })
+              : ''}
+          </select>
+        </div>
         {models.length &&
         selectedTable.length &&
         this.props[selectedTable].length ? (
@@ -85,7 +87,7 @@ class Grid extends React.Component {
             <tbody>
               {this.props[selectedTable].map((row, i) => {
                 return (
-                  <tr key={i}>
+                  <tr className={i % 2 ? '' : 'grayed'} key={i}>
                     {Object.values(row).map((value, j) => {
                       return value && Array.isArray(value) ? (
                         <td key={j}>
