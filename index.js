@@ -22,7 +22,7 @@ const createWindow = () => {
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
 
   //style points
-  // mainWindow.removeMenu(true);
+  mainWindow.removeMenu(true);
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools();

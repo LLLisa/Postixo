@@ -1,6 +1,5 @@
 body {
   font-family: Arial, Helvetica, sans-serif;
-  flex-direction: column;
 }
 
 td , th{
@@ -13,4 +12,18 @@ td , th{
   background-color: lightgray;
 }
 
+.header {
+  display: flex;
+  border: 1px solid black;
+  background-color: lightgray;
+  padding: 1rem;
+}
 
+.selector {
+  flex-direction: column;
+  margin-right: 1rem;
+}
+
+#tableSelect{
+  min-width: 6rem;
+}

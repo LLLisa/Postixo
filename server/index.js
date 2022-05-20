@@ -15,9 +15,6 @@ const init = async () => {
   }
 };
 
-//init called in top-level
-// init();
-
 //server api-----------------------------------------
 app.use('/dist', express.static(path.join(__dirname, '../dist')));
 app.use(express.json());
