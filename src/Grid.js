@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getDbName, loadModels, genericLoader } from '../store';
+import { getDbName, loadDbNames, loadModels, genericLoader } from '../store';
 import InnerGrid from './InnerGrid';
 import axios from 'axios';
 
@@ -19,10 +19,13 @@ class Grid extends React.Component {
   async componentDidMount() {
     console.log('CDM', this.props);
     const { loadModels, genericLoader } = this.props;
+    await loadDbNames();
     await loadModels();
     await Promise.all(this.props.models.map((model) => genericLoader(model)));
     getDbName();
+
     this.setState({
+      dbName: this.props.dbName,
       selectedTable: this.props.models[0],
     });
   }
@@ -37,6 +40,7 @@ class Grid extends React.Component {
 
   async dbSelect(ev) {
     ev.preventDefault();
+    await this.setState({ dbName: ev.target.value });
     const response = await axios({
       url: `/dbChange/${this.state.dbName}`,
       baseURL: 'http://localhost:42069',
@@ -46,13 +50,13 @@ class Grid extends React.Component {
 
   render() {
     const { selectedTable } = this.state;
-    const { models, dbName } = this.props;
+    const { models, dbName, dbList } = this.props;
     return (
       <div>
         <div>
           <h1>Postixo</h1>
           {dbName.length ? <h3>current database is: {dbName}</h3> : ''}
-          <form>
+          {/* <form>
             <input
               name="dbName"
               value={this.state.dbName}
@@ -60,7 +64,18 @@ class Grid extends React.Component {
               onChange={this.handleOnChange}
             ></input>
             <button onClick={(ev) => this.dbSelect(ev)}>submit</button>
-          </form>
+          </form> */}
+          <select
+            name="dbSelect"
+            value={this.state.dbName}
+            onChange={this.dbSelect}
+          >
+            {dbList.length
+              ? dbList.map((name, i) => {
+                  return <option key={i}>{name}</option>;
+                })
+              : ''}
+          </select>
           <select
             name="tableSelect"
             value={selectedTable}
@@ -115,6 +130,7 @@ class Grid extends React.Component {
 const mapDispatch = (dispatch) => {
   return {
     getDbName: dispatch(getDbName()), //whyyyyyyyyyyy
+    loadDbNames: dispatch(loadDbNames()),
     loadModels: () => dispatch(loadModels()),
     genericLoader: (slice) => dispatch(genericLoader(slice)),
   };
