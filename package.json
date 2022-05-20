@@ -1,6 +1,6 @@
 {
   "name": "postixo",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "description": "A PostgreSQL Visualizer for linux",
   "main": "index.js",
   "scripts": {
@@ -30,7 +30,7 @@
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "electron_postgres_test"
+            "name": "Postixo"
           }
         },
         {
