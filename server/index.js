@@ -12,7 +12,7 @@ app.get('/dbChange/:newDbName', (req, res, next) => {
     db = new Sequelize(`postgres://localhost/${req.params.newDbName}`, {
       logging: false,
     });
-    res.send(db);
+    //no response because forced F5
   } catch (error) {
     next(error);
   }
