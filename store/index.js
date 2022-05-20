@@ -2,7 +2,24 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 import axios from 'axios';
-import inflection from 'inflection';
+
+///get database name-------------------
+const GET_DBNAME = 'GET_DBNAME';
+
+export const getDbName = () => {
+  return async (dispatch) => {
+    const response = await axios({
+      url: '/dbName',
+      baseURL: 'http://localhost:42069',
+    });
+    dispatch({ type: GET_DBNAME, payload: response.data });
+  };
+};
+
+const dbName = (state = '', action) => {
+  if (action.type === GET_DBNAME) return action.payload;
+  return state;
+};
 
 //models slice ---------------
 const LOAD_MODELS = 'LOAD_MODELS';
@@ -22,7 +39,7 @@ export const loadModels = () => {
   };
 };
 
-//experiment zone-----------------------------
+//general store-----------------------------
 export const genericLoader = (slice) => {
   return async (dispatch) => {
     try {
@@ -54,12 +71,11 @@ const modelsPreLoad = await axios({
 const preModels = modelsPreLoad.data;
 
 for (let i = 0; i < preModels.length; i++) {
-  preModels[i] = inflection.pluralize(preModels[i]);
   reducerBody[preModels[i]] = genericReducer(preModels[i]);
 }
 
 //combine reducers------------------------------
-const reducer = combineReducers({ models, ...reducerBody });
+const reducer = combineReducers({ dbName, models, ...reducerBody });
 
 const store = createStore(reducer, applyMiddleware(thunk, logger));
 

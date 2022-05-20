@@ -1,9 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 
 const InnerGrid = (props) => {
-  console.log(props.inherited);
   return (
     <div>
       <table>
@@ -23,7 +21,7 @@ const InnerGrid = (props) => {
                     <td key={j}>
                       <InnerGrid inherited={value} />
                     </td>
-                  ) : typeof value === 'object' ? (
+                  ) : value && typeof value === 'object' ? (
                     <td key={j}>cannot display objects :(</td>
                   ) : (
                     <td key={j}>{value}</td>
