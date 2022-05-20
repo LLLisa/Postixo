@@ -21,7 +21,7 @@ const InnerGrid = (props) => {
                     <td key={j}>
                       <InnerGrid inherited={value} />
                     </td>
-                  ) : typeof value === 'object' ? (
+                  ) : value && typeof value === 'object' ? (
                     <td key={j}>cannot display objects :(</td>
                   ) : (
                     <td key={j}>{value}</td>

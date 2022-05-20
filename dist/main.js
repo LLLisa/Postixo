@@ -2509,6 +2509,7 @@ class Grid extends (react__WEBPACK_IMPORTED_MODULE_0___default().Component) {
     } = this.props;
     await loadModels();
     await Promise.all(this.props.models.map(model => genericLoader(model)));
+    (0,_store__WEBPACK_IMPORTED_MODULE_2__.getDbName)();
     this.setState({
       selectedTable: this.props.models[0]
     });
@@ -2521,31 +2522,29 @@ class Grid extends (react__WEBPACK_IMPORTED_MODULE_0___default().Component) {
   }
 
   tableSubmit(ev) {
-    // ev.preventDefault();
     this.setState({
       selectedTable: ev.target.value
     });
   }
 
   async dbSelect(ev) {
-    ev.preventDefault(); // await dbSwitcheroo(this.state.dbName);
-
+    ev.preventDefault();
     const response = await axios__WEBPACK_IMPORTED_MODULE_4___default()({
       url: `/dbChange/${this.state.dbName}`,
       baseURL: 'http://localhost:42069'
     });
-    window.location.reload(); // this.setState({ dbName: '' });
+    window.location.reload();
   }
 
   render() {
-    // console.log('render', this.props, this.state);
     const {
       selectedTable
     } = this.state;
     const {
-      models
+      models,
+      dbName
     } = this.props;
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", null, "Postixo"), dbName.length ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h3", null, "current database is: ", dbName) : '', /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
       name: "dbName",
       value: this.state.dbName,
       placeholder: "database name",
@@ -2572,7 +2571,7 @@ class Grid extends (react__WEBPACK_IMPORTED_MODULE_0___default().Component) {
           key: j
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_InnerGrid__WEBPACK_IMPORTED_MODULE_3__["default"], {
           inherited: value
-        })) : typeof value === 'object' ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
+        })) : value && typeof value === 'object' ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
           key: j
         }, "cannot display objects :(") : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
           key: j
@@ -2585,9 +2584,10 @@ class Grid extends (react__WEBPACK_IMPORTED_MODULE_0___default().Component) {
 
 const mapDispatch = dispatch => {
   return {
+    getDbName: dispatch((0,_store__WEBPACK_IMPORTED_MODULE_2__.getDbName)()),
+    //whyyyyyyyyyyy
     loadModels: () => dispatch((0,_store__WEBPACK_IMPORTED_MODULE_2__.loadModels)()),
-    genericLoader: slice => dispatch((0,_store__WEBPACK_IMPORTED_MODULE_2__.genericLoader)(slice)) // dbSwitcheroo: (newDbName) => dispatch(dbSwitcheroo(newDbName)),
-
+    genericLoader: slice => dispatch((0,_store__WEBPACK_IMPORTED_MODULE_2__.genericLoader)(slice))
   };
 };
 
@@ -2627,7 +2627,7 @@ const InnerGrid = props => {
         key: j
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(InnerGrid, {
         inherited: value
-      })) : typeof value === 'object' ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
+      })) : value && typeof value === 'object' ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
         key: j
       }, "cannot display objects :(") : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
         key: j
@@ -2691,6 +2691,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
 /* harmony export */   "genericLoader": () => (/* binding */ genericLoader),
+/* harmony export */   "getDbName": () => (/* binding */ getDbName),
 /* harmony export */   "loadModels": () => (/* binding */ loadModels)
 /* harmony export */ });
 /* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
@@ -2702,17 +2703,27 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
- //dbSwitcheroo-----------------
-// export const dbSwitcheroo = (newDbName) => {
-//   console.log(newDbName);
-//   return async (dispatch) => {
-//     const response = await axios({
-//       url: `/dbChange/${newDbName}`,
-//       baseURL: 'http://localhost:42069',
-//     });
-//   };
-// };
-//models slice ---------------
+ ///get database name-------------------
+
+const GET_DBNAME = 'GET_DBNAME';
+const getDbName = () => {
+  return async dispatch => {
+    const response = await axios__WEBPACK_IMPORTED_MODULE_1___default()({
+      url: '/dbName',
+      baseURL: 'http://localhost:42069'
+    });
+    dispatch({
+      type: GET_DBNAME,
+      payload: response.data
+    });
+  };
+};
+
+const dbName = (state = '', action) => {
+  if (action.type === GET_DBNAME) return action.payload;
+  return state;
+}; //models slice ---------------
+
 
 const LOAD_MODELS = 'LOAD_MODELS';
 
@@ -2774,6 +2785,7 @@ for (let i = 0; i < preModels.length; i++) {
 
 
 const reducer = (0,redux__WEBPACK_IMPORTED_MODULE_2__.combineReducers)({
+  dbName,
   models,
   ...reducerBody
 });

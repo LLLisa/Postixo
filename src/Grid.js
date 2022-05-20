@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { loadModels, genericLoader, dbSwitcheroo } from '../store';
+import { getDbName, loadModels, genericLoader } from '../store';
 import InnerGrid from './InnerGrid';
 import axios from 'axios';
 
@@ -21,6 +21,7 @@ class Grid extends React.Component {
     const { loadModels, genericLoader } = this.props;
     await loadModels();
     await Promise.all(this.props.models.map((model) => genericLoader(model)));
+    getDbName();
     this.setState({
       selectedTable: this.props.models[0],
     });
@@ -31,28 +32,25 @@ class Grid extends React.Component {
   }
 
   tableSubmit(ev) {
-    // ev.preventDefault();
     this.setState({ selectedTable: ev.target.value });
   }
 
   async dbSelect(ev) {
     ev.preventDefault();
-    // await dbSwitcheroo(this.state.dbName);
     const response = await axios({
       url: `/dbChange/${this.state.dbName}`,
       baseURL: 'http://localhost:42069',
     });
     window.location.reload();
-
-    // this.setState({ dbName: '' });
   }
 
   render() {
-    // console.log('render', this.props, this.state);
     const { selectedTable } = this.state;
-    const { models } = this.props;
+    const { models, dbName } = this.props;
     return (
       <div>
+        <h1>Postixo</h1>
+        {dbName.length ? <h3>current database is: {dbName}</h3> : ''}
         <form>
           <input
             name="dbName"
@@ -93,7 +91,7 @@ class Grid extends React.Component {
                         <td key={j}>
                           <InnerGrid inherited={value} />
                         </td>
-                      ) : typeof value === 'object' ? (
+                      ) : value && typeof value === 'object' ? (
                         <td key={j}>cannot display objects :(</td>
                       ) : (
                         <td key={j}>{value}</td>
@@ -114,9 +112,9 @@ class Grid extends React.Component {
 
 const mapDispatch = (dispatch) => {
   return {
+    getDbName: dispatch(getDbName()), //whyyyyyyyyyyy
     loadModels: () => dispatch(loadModels()),
     genericLoader: (slice) => dispatch(genericLoader(slice)),
-    // dbSwitcheroo: (newDbName) => dispatch(dbSwitcheroo(newDbName)),
   };
 };
 

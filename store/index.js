@@ -3,16 +3,23 @@ import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 import axios from 'axios';
 
-//dbSwitcheroo-----------------
-// export const dbSwitcheroo = (newDbName) => {
-//   console.log(newDbName);
-//   return async (dispatch) => {
-//     const response = await axios({
-//       url: `/dbChange/${newDbName}`,
-//       baseURL: 'http://localhost:42069',
-//     });
-//   };
-// };
+///get database name-------------------
+const GET_DBNAME = 'GET_DBNAME';
+
+export const getDbName = () => {
+  return async (dispatch) => {
+    const response = await axios({
+      url: '/dbName',
+      baseURL: 'http://localhost:42069',
+    });
+    dispatch({ type: GET_DBNAME, payload: response.data });
+  };
+};
+
+const dbName = (state = '', action) => {
+  if (action.type === GET_DBNAME) return action.payload;
+  return state;
+};
 
 //models slice ---------------
 const LOAD_MODELS = 'LOAD_MODELS';
@@ -68,7 +75,7 @@ for (let i = 0; i < preModels.length; i++) {
 }
 
 //combine reducers------------------------------
-const reducer = combineReducers({ models, ...reducerBody });
+const reducer = combineReducers({ dbName, models, ...reducerBody });
 
 const store = createStore(reducer, applyMiddleware(thunk, logger));
 
