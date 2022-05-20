@@ -1,9 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 
 const InnerGrid = (props) => {
-  console.log(props.inherited);
   return (
     <div>
       <table>

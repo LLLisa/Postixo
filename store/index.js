@@ -2,7 +2,17 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 import axios from 'axios';
-import inflection from 'inflection';
+
+//dbSwitcheroo-----------------
+// export const dbSwitcheroo = (newDbName) => {
+//   console.log(newDbName);
+//   return async (dispatch) => {
+//     const response = await axios({
+//       url: `/dbChange/${newDbName}`,
+//       baseURL: 'http://localhost:42069',
+//     });
+//   };
+// };
 
 //models slice ---------------
 const LOAD_MODELS = 'LOAD_MODELS';
@@ -22,7 +32,7 @@ export const loadModels = () => {
   };
 };
 
-//experiment zone-----------------------------
+//general store-----------------------------
 export const genericLoader = (slice) => {
   return async (dispatch) => {
     try {
@@ -54,7 +64,6 @@ const modelsPreLoad = await axios({
 const preModels = modelsPreLoad.data;
 
 for (let i = 0; i < preModels.length; i++) {
-  preModels[i] = inflection.pluralize(preModels[i]);
   reducerBody[preModels[i]] = genericReducer(preModels[i]);
 }
 
