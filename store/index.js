@@ -30,7 +30,7 @@ export const loadDbNames = () => {
       url: '/dbList',
       baseURL: 'http://localhost:42069',
     });
-    dispatch({ type: LOAD_DBNAMES, payload: response.data });
+    dispatch({ type: LOAD_DBNAMES, payload: response.data.sort() });
   };
 };
 
@@ -42,19 +42,19 @@ const dbList = (state = [], action) => {
 //models slice ---------------
 const LOAD_MODELS = 'LOAD_MODELS';
 
-const models = (state = [], action) => {
-  if (action.type === LOAD_MODELS) return action.payload;
-  return state;
-};
-
 export const loadModels = () => {
   return async (dispatch) => {
     const response = await axios({
       url: '/models',
       baseURL: 'http://localhost:42069',
     });
-    dispatch({ type: LOAD_MODELS, payload: response.data });
+    dispatch({ type: LOAD_MODELS, payload: response.data.sort() });
   };
+};
+
+const models = (state = [], action) => {
+  if (action.type === LOAD_MODELS) return action.payload;
+  return state;
 };
 
 //general store-----------------------------
@@ -64,6 +64,7 @@ export const genericLoader = (slice) => {
       url: `/generic/${slice}`,
       baseURL: 'http://localhost:42069',
     });
+    const sortedData = response.data;
     dispatch({ type: `LOAD_${slice}`, payload: response.data });
   };
 };
