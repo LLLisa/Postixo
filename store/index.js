@@ -48,7 +48,8 @@ export const loadModels = () => {
       url: '/models',
       baseURL: 'http://localhost:42069',
     });
-    dispatch({ type: LOAD_MODELS, payload: response.data.sort() });
+    const sortedData = response.data.sort();
+    dispatch({ type: LOAD_MODELS, payload: sortedData });
   };
 };
 
@@ -64,8 +65,8 @@ export const genericLoader = (slice) => {
       url: `/generic/${slice}`,
       baseURL: 'http://localhost:42069',
     });
-    const sortedData = response.data;
-    dispatch({ type: `LOAD_${slice}`, payload: response.data });
+    const sortedData = response.data.sort((a, b) => a.id - b.id);
+    dispatch({ type: `LOAD_${slice}`, payload: sortedData });
   };
 };
 

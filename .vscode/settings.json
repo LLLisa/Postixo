@@ -1,0 +1,8 @@
+{
+    "workbench.tips.enabled": false,
+    "editor.quickSuggestions": {
+        "other": "off",
+        "comments": "off",
+        "strings": "off"
+    }
+}

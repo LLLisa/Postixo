@@ -1,4 +1,4 @@
-- refresh button
+- ~~refresh button~~
 - ~~alphabetize menus~~
 - icon
 - fix README
