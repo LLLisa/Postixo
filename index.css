@@ -19,6 +19,17 @@ td , th{
   padding: 1rem;
 }
 
+.label {
+  display: flex;
+  justify-content: space-between;
+}
+
+button {
+  font-size: 0.8rem;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
 .selector {
   flex-direction: column;
   margin-right: 1rem;

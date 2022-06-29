@@ -12,16 +12,17 @@ class Grid extends React.Component {
       dbName: '',
     };
     this.handleOnChange = this.handleOnChange.bind(this);
+    this.handleRefresh = this.handleRefresh.bind(this);
     this.tableSubmit = this.tableSubmit.bind(this);
     this.dbSelect = this.dbSelect.bind(this);
   }
 
   async componentDidMount() {
-    // console.log('CDM', this.props);
+    console.log('CDM', this.props);
     const { loadModels, genericLoader } = this.props;
     await loadDbNames();
     await loadModels();
-    await Promise.all(this.props.models.map((model) => genericLoader(model)));
+    await this.props.models.map((model) => genericLoader(model));
     getDbName();
 
     this.setState({
@@ -36,6 +37,10 @@ class Grid extends React.Component {
 
   tableSubmit(ev) {
     this.setState({ selectedTable: ev.target.value });
+  }
+
+  handleRefresh() {
+    this.props.genericLoader(this.state.selectedTable);
   }
 
   async dbSelect(ev) {
@@ -56,14 +61,15 @@ class Grid extends React.Component {
         <div>
           <h1>Postixo</h1>
           {dbName.length ? <h3>current database is: {dbName}</h3> : ''}
-          <div className="header">
-            <div className="selector">
-              <div className="label">
-                <label for="dbSelect">select database</label>
+          <div className='header'>
+            <div className='selector'>
+              <div className='label'>
+                <label htmlFor='dbSelect'>select database</label>
+                <button onClick={this.handleRefresh}>refresh</button>
               </div>
               <div>
                 <select
-                  name="dbSelect"
+                  name='dbSelect'
                   value={this.state.dbName}
                   onChange={this.dbSelect}
                 >
@@ -75,14 +81,15 @@ class Grid extends React.Component {
                 </select>
               </div>
             </div>
-            <div className="selector">
-              <div className="label">
-                <label for="tableSelect">select table</label>
+            <div className='selector'>
+              <div className='label'>
+                <label htmlFor='tableSelect'>select table</label>
+                <button style={{ opacity: '0' }}>spacer</button>
               </div>
               <div>
                 <select
-                  id="tableSelect"
-                  name="tableSelect"
+                  id='tableSelect'
+                  name='tableSelect'
                   value={selectedTable}
                   onChange={this.tableSubmit}
                 >
