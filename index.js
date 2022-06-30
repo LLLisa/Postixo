@@ -16,6 +16,7 @@ const createWindow = () => {
       nodeIntegration: true,
       contextIsolation: false, //super important!!!
     },
+    icon: path.join(__dirname, 'public/icon.png'),
   });
 
   // and load the index.html of the app.
