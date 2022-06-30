@@ -1,6 +1,0 @@
-- ~~refresh button~~
-- ~~alphabetize menus~~
-- icon
-- fix README
-- general refactor
-- - hooks?
