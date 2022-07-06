@@ -21,6 +21,15 @@ const dbName = (state = '', action) => {
   return state;
 };
 
+export const dbSelect = (dbName) => {
+  return async () => {
+    const response = await axios({
+      url: `/dbChange/${dbName}`,
+      baseURL: 'http://localhost:42069',
+    });
+  };
+};
+
 //dblist slice------------------------------
 const LOAD_DBNAMES = 'LOAD_DBNAMES';
 

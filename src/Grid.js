@@ -1,8 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getDbName, loadDbNames, loadModels, genericLoader } from '../store';
+import {
+  getDbName,
+  loadDbNames,
+  loadModels,
+  genericLoader,
+  dbSelect,
+} from '../store';
 import InnerGrid from './InnerGrid';
-import axios from 'axios';
 
 class Grid extends React.Component {
   constructor() {
@@ -18,7 +23,7 @@ class Grid extends React.Component {
   }
 
   async componentDidMount() {
-    console.log('CDM', this.props);
+    // console.log('CDM', this.props);
     const { loadModels, genericLoader } = this.props;
     await loadDbNames();
     await loadModels();
@@ -46,10 +51,7 @@ class Grid extends React.Component {
   async dbSelect(ev) {
     ev.preventDefault();
     await this.setState({ dbName: ev.target.value });
-    const response = await axios({
-      url: `/dbChange/${this.state.dbName}`,
-      baseURL: 'http://localhost:42069',
-    });
+    this.props.dbSelect(this.state.dbName);
     window.location.reload();
   }
 
@@ -148,6 +150,7 @@ const mapDispatch = (dispatch) => {
   return {
     getDbName: dispatch(getDbName()), //whyyyyyyyyyyy
     loadDbNames: dispatch(loadDbNames()),
+    dbSelect: (dbName) => dispatch(dbSelect(dbName)),
     loadModels: () => dispatch(loadModels()),
     genericLoader: (slice) => dispatch(genericLoader(slice)),
   };
