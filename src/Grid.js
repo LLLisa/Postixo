@@ -22,19 +22,19 @@ class Grid extends React.Component {
     this.dbSelect = this.dbSelect.bind(this);
   }
 
-  async componentDidMount() {
-    // console.log('CDM', this.props);
-    const { loadModels, genericLoader } = this.props;
-    await loadDbNames();
-    await loadModels();
-    await this.props.models.map((model) => genericLoader(model));
-    getDbName();
+  // async componentDidMount() {
+  //   // console.log('CDM', this.props);
+  //   const { loadModels, genericLoader } = this.props;
+  //   await loadDbNames();
+  //   await loadModels();
+  //   await this.props.models.map((model) => genericLoader(model));
+  //   getDbName();
 
-    this.setState({
-      dbName: this.props.dbName,
-      selectedTable: this.props.models[0],
-    });
-  }
+  //   this.setState({
+  //     dbName: this.props.dbName,
+  //     selectedTable: this.props.models[0],
+  //   });
+  // }
 
   handleOnChange(ev) {
     this.setState({ [ev.target.name]: ev.target.value });
@@ -148,8 +148,8 @@ class Grid extends React.Component {
 
 const mapDispatch = (dispatch) => {
   return {
-    getDbName: dispatch(getDbName()), //whyyyyyyyyyyy
-    loadDbNames: dispatch(loadDbNames()),
+    // getDbName: dispatch(getDbName()), //whyyyyyyyyyyy
+    // loadDbNames: dispatch(loadDbNames()),
     dbSelect: (dbName) => dispatch(dbSelect(dbName)),
     loadModels: () => dispatch(loadModels()),
     genericLoader: (slice) => dispatch(genericLoader(slice)),

@@ -3,10 +3,16 @@ import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import Grid from './Grid';
 import store from '../store';
+import Header from './Header';
 
 class Root extends React.Component {
   render() {
-    return <Grid />;
+    return (
+      <>
+        <Header />
+        <Grid />
+      </>
+    );
   }
 }
 
