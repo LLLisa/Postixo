@@ -1,6 +1,6 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-import logger from 'redux-logger';
+import { createLogger } from 'redux-logger';
 import axios from 'axios';
 
 ///get current database name-------------------
@@ -91,6 +91,8 @@ for (let i = 0; i < preModels.length; i++) {
 
 //combine reducers------------------------------
 const reducer = combineReducers({ dbName, dbList, models, ...reducerBody });
+
+const logger = createLogger({ collapsed: true });
 
 const store = createStore(reducer, applyMiddleware(thunk, logger));
 
