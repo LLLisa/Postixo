@@ -2,7 +2,10 @@ const path = require('path');
 const express = require('express');
 const app = express();
 const Sequelize = require('sequelize');
-let db = new Sequelize(`postgres://localhost/postgres`, {
+let PGUser = "lisa"
+let PGPassword = "password"
+let PGKey = PGUser.length && PGPassword.length ? `${PGUser}:${PGPassword}@` : "" 
+let db = new Sequelize(`postgres://${PGKey}localhost/postgres`, {
   logging: false,
 });
 
@@ -29,6 +32,7 @@ app.get('/dbName', async (req, res, next) => {
       'SELECT table_catalog FROM information_schema.tables LIMIT 1;'
     );
     const currentDb = db_name[0][0].table_catalog;
+    console.log(currentDb)
     res.send(currentDb);
   } catch (error) {
     next(error);
